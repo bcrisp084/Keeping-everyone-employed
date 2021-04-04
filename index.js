@@ -227,22 +227,22 @@ function role() {
             inquirer.prompt([
               {
                 type: 'input',
-                message: 'what is the first name of the new employee?',
+                message: 'what is the first name of the employee you wish to delete?',
                 name: 'first_name'
               },
               {
                 type: 'input',
-                message: 'what is the last name of the new employee?',
+                message: 'what is the last name of the employee you wish to delete?',
                 name: 'last_name'
               },
               {
                 type: 'number',
-                message: 'what is the role ID of the new employee?',
+                message: 'what is the role ID of the employee you wish to delete?',
                 name: 'role_id'
               },
               {
                 type: 'number',
-                message: 'what is the manager ID of the new employee?',
+                message: 'what is the manager ID of the employee?',
                 name: 'manager_id'
               }
             ])
@@ -250,6 +250,57 @@ function role() {
               .then(answer => {
                 const query = `DELETE FROM employee WHERE(first_name, last_name, role_id, manager_id) =(
                 "${answer.first_name}", "${answer.last_name}", "${answer.role_id}", "${answer.manager_id}")`
+                connection.query(query, function (err, res) {
+                  if (err) throw err
+                  console.table(res)
+                  mainMenu()
+                })
+              })
+          };
+
+          const deleteDepartment = () => {
+            inquirer.prompt([
+              {
+                type: 'input',
+                message: 'what is the name of the department you wish to delete?',
+                name: 'name'
+              }
+            ])
+          
+              .then(answer => {
+                const query = `DELETE FROM department WHERE(name) =(
+                "${answer.name}")`
+                connection.query(query, function (err, res) {
+                  if (err) throw err
+                  console.table(res)
+                  mainMenu()
+                })
+              })
+          };
+
+          
+          const deleteRoles = () => {
+            inquirer.prompt([
+              {
+                type: 'input',
+                message: 'what is the title of the role you wish to delete?',
+                name: 'title'
+              },
+              {
+                type: 'number',
+                message: 'what is the salary of the role you wish to delete?',
+                name: 'salary'
+              },
+              {
+                type: 'number',
+                message: 'what is the department id of the role you wish to delete?',
+                name: 'department_id'
+              }
+            ])
+          
+              .then(answer => {
+                const query = `DELETE FROM role WHERE(title, salary, department_id) =(
+                "${answer.title}", "${answer.salary}", "${answer.department_id}")`
                 connection.query(query, function (err, res) {
                   if (err) throw err
                   console.table(res)
