@@ -41,7 +41,7 @@ insert into employee (id, first_name, last_name, role_id, manager_id)
 values (13, "Courtney", "Thomas", 9, 14);
 
 insert into employee (id, first_name, last_name, role_id, manager_id)
-values (9, "Dustin", "Severn", 48, 11);
+values (14, "Dustin", "Severn", 48, 11);
 
 Insert into role (id, title, salary, department_id)
 values (1, "HR Rep", 65000, 6);

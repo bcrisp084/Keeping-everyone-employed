@@ -82,3 +82,36 @@ function mainMenu() {
         }
     });
 }
+
+function viewDepartments() {
+    connection.query(
+     `Select * from department`, 
+        function (err, data) {
+          if (err) throw err;
+          console.table(data);
+          mainMenu();
+        }
+      );
+}
+
+function viewEmployees() {
+    connection.query(
+     `Select * from employee`, 
+        function (err, data) {
+          if (err) throw err;
+          console.table(data);
+          mainMenu();
+        }
+      );
+}
+
+function viewRoles() {
+    connection.query(
+     `Select * from role`, 
+        function (err, data) {
+          if (err) throw err;
+          console.table(data);
+          mainMenu();
+        }
+      );
+}
