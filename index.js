@@ -36,7 +36,6 @@ const getStarted = [
         "Delete a Role",
         "Delete an Employee",
         "Update Employee's Role",
-        "View the total utilized budget of a department",
         "Exit"
         ]
     },
@@ -72,11 +71,8 @@ function mainMenu() {
             case "Delete an Employee":
             deleteEmployees();
             break;
-            case "Update Employees Role":
+            case "Update Employee's Role":
             updatedEmployees();
-            break;
-            case "View the total utilized budget of a department":
-            totalBudget();
             break;
             case "Exit":
             connection.end();
@@ -139,6 +135,8 @@ inquirer
         },
         function (err) {
             if (err) throw err;
+            console.table(answer)
+
         }
     );
     mainMenu()
@@ -174,6 +172,8 @@ function role() {
             },
             function (err) {
                 if (err) throw err;
+                console.table(answer)
+
             }
         );
         mainMenu()
@@ -217,6 +217,7 @@ function role() {
                 },
                 function (err) {
                     if (err) throw err;
+                    console.table(answer)
                 }
             );
             mainMenu()
@@ -307,4 +308,31 @@ function role() {
                   mainMenu()
                 })
               })
+          };
+
+          function updatedEmployees () {
+            inquirer.prompt([
+              {
+                type: "input",
+                name: "id",
+                message: "Which employee would you like to update? (Enter Employee ID)"
+              },
+              {
+                type: "input",
+                name: "role_id",
+                message: "What is the employee's updated role? (Ender Role ID)"
+              }
+            ]).then (function (answer) {
+              var query = "UPDATE employee SET role_id = ? WHERE id = ?";
+              connection.query(query,
+                [
+                  answer.role_id,
+                  answer.id
+                ],
+                function(err, res) {
+                  if (err) throw err;
+                  console.table(answer);
+                  mainMenu();
+              });
+            });
           };
