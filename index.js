@@ -12,15 +12,14 @@ const connection = mysql.createConnection({
 
 connection.connect(function(err) {
     if (err) throw err;
-    getStarted()
+    mainMenu();
 })
 
-const getStarted = () => 
-inquirer.prompt([
+const getStarted = [
     {
         type: 'list',
         name: 'action',
-        message: 'Please decide how you would like to proceed.',
+        message: 'Please choose one of the following.',
         loop: false,
         choices: [
         "Add Department",
@@ -32,10 +31,54 @@ inquirer.prompt([
         "Delete a Department",
         "Delete a Role",
         "Delete an Employee",
-        "View employees by manager",
-        "Update employee's role",
-        "Update employee's manager",
+        "Update Employee's Role",
         "View the total utilized budget of a department",
+        "Exit"
         ]
     },
-]);
+];
+
+function mainMenu() {
+    inquirer.prompt(getStarted).then((response) => {
+        switch (response.action) {
+            case "Add Department":
+            department();
+            break;
+            case "Add Role":
+            role();
+            break;
+            case "Add Employee":
+            employee();
+            break;
+            case "View All Departments":
+            viewDepartments();
+            break;
+            case "View All Roles":
+            viewRoles();
+            break;
+            case "View All Employees":
+            viewEmployees();
+            break;
+            case "Delete a Department":
+            deleteDepartment();
+            break;
+            case "Delete a Role":
+            deleteRoles();
+            break;
+            case "Delete an Employee":
+            deleteEmployees();
+            break;
+            case "Update Employees Role":
+            updatedEmployees();
+            break;
+            case "View the total utilized budget of a department":
+            totalBudget();
+            break;
+            case "Exit":
+            connection.end();
+            break;
+            default:
+            connection.end()
+        }
+    });
+}
