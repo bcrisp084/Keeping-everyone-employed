@@ -1,6 +1,9 @@
 const inquirer = require("inquirer");
 const consoleTable = require("console.table");
 const mysql = require("mysql");
+const chalk = require('chalk');
+
+
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -14,6 +17,7 @@ connection.connect(function(err) {
     if (err) throw err;
     mainMenu();
 })
+console.log(chalk.blue("______________ WELCOME_____________"));
 
 const getStarted = [
     {
@@ -83,6 +87,8 @@ function mainMenu() {
     });
 }
 
+
+
 function viewDepartments() {
     connection.query(
      `Select * from department`, 
@@ -115,3 +121,139 @@ function viewRoles() {
         }
       );
 }
+
+function department() {
+inquirer
+.prompt([
+    {
+        name: "department",
+        type: "input",
+        message: "What is the name of this department?",
+    },
+])
+.then(function (answer) {
+    connection.query(
+        "INSERT INTO department SET ?",
+        {
+            name: answer.department,
+        },
+        function (err) {
+            if (err) throw err;
+        }
+    );
+    mainMenu()
+})
+};
+
+function role() {
+    inquirer
+    .prompt([
+        {
+            name: "title",
+            type: "input",
+            message: "What is the title of this role?",
+        },
+        {
+            name: "salary",
+            type: "number",
+            message: "What is the salary of this role?",
+        },
+        {
+            name: "department_id",
+            type: "number",
+            message: "What is the id of this department?",
+        },
+    ])
+    .then(function (answer) {
+        connection.query(
+            "INSERT INTO role SET ?",
+            {
+                title: answer.title,
+                salary: answer.salary,
+                department_id: answer.department_id,
+            },
+            function (err) {
+                if (err) throw err;
+            }
+        );
+        mainMenu()
+    })
+    };
+
+    function employee() {
+        inquirer
+        .prompt([
+            {
+                name: "first_name",
+                type: "input",
+                message: "What is the first name of this employee?",
+            },
+            {
+                name: "last_name",
+                type: "input",
+                message: "What is the last name of this employee?",
+            },
+            {
+                name: "role_id",
+                type: "number",
+                message: "What is the role id of this employee?",
+            },
+            {
+                name: "manager_id",
+                type: "number",
+                message: "If this employee is a manager enter their number otherwise click ok.",
+                default: false,
+            },
+        ])
+        .then(function (answer) {
+            connection.query(
+                "INSERT INTO employee SET ?",
+                {
+                    first_name: answer.first_name,
+                    last_name: answer.last_name,
+                    role_id: answer.role_id,
+                    manager_id: answer.manager_id,
+
+                },
+                function (err) {
+                    if (err) throw err;
+                }
+            );
+            mainMenu()
+        })
+        };
+
+        const deleteEmployees = () => {
+            inquirer.prompt([
+              {
+                type: 'input',
+                message: 'what is the first name of the new employee?',
+                name: 'first_name'
+              },
+              {
+                type: 'input',
+                message: 'what is the last name of the new employee?',
+                name: 'last_name'
+              },
+              {
+                type: 'number',
+                message: 'what is the role ID of the new employee?',
+                name: 'role_id'
+              },
+              {
+                type: 'number',
+                message: 'what is the manager ID of the new employee?',
+                name: 'manager_id'
+              }
+            ])
+          
+              .then(answer => {
+                const query = `DELETE FROM employee WHERE(first_name, last_name, role_id, manager_id) =(
+                "${answer.first_name}", "${answer.last_name}", "${answer.role_id}", "${answer.manager_id}")`
+                connection.query(query, function (err, res) {
+                  if (err) throw err
+                  console.table(res)
+                  mainMenu()
+                })
+              })
+          };
