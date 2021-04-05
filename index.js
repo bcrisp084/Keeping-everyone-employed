@@ -320,7 +320,7 @@ function role() {
               {
                 type: "input",
                 name: "role_id",
-                message: "What is the employee's updated role? (Ender Role ID)"
+                message: "What is the employee's updated role? (Enter Role ID)"
               }
             ]).then (function (answer) {
               var query = "UPDATE employee SET role_id = ? WHERE id = ?";
